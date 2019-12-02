@@ -1,0 +1,10 @@
+apiVersion: getambassador.io/v1
+kind: Mapping
+metadata:
+  name: apoc-mapping
+  namespace: atomic-pocs
+spec:
+  prefix: /apoc/
+  rewrite: /
+  method: GET
+  service: apoc-service:4567

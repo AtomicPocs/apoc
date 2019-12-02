@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apoc
+  namespace: atomic-pocs
+  labels:
+    app: apoc
+spec:
+  selector:
+    matchLabels:
+      app: apoc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: apoc
+    spec:
+      containers:
+      - name: apoc
+        image: docker.pkg.github.com/atomicpocs/apoc/apoc:1.0.0
+        ports:
+        - name: http 
+          containerPort: 4567
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "333m"
+        livenessProbe:
+            httpGet:
+              path: /ping
+              port: 4567
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      imagePullSecrets:
+        - name: regcred

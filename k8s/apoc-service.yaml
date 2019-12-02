@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: apoc-service
+  namespace: atomic-pocs
+  labels:
+    app: apoc
+spec:
+  selector:
+    app: apoc
+  ports:
+  - name: http 
+    port: 4567
+    targetPort: 4567
