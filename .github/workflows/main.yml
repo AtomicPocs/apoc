@@ -50,10 +50,15 @@ jobs:
     name: deploy to cluster
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - name: deploy to cluster
-      uses: steebchen/kubectl@master
-      env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+    - uses: actions/checkout@v1
+    - name: Run Kubernetes tools
+      uses: stefanprodan/kube-tools@v1
       with:
-        args: apply -f k8s/deployment.yaml
+        kubectl: 1.15.2
+        command: |
+          echo "Setup config"
+          echo "$KUBE_CONFIG_DATA" | base64 --decode > /tmp/config
+          export KUBECONFIG=/tmp/config
+
+          echo "Apply"
+          kubectl apply -f k8s/deployment.yaml
