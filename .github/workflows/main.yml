@@ -46,3 +46,11 @@ jobs:
           echo VERSION=$VERSION
           docker tag image $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
+        - uses: Azure/k8s-deploy@v1
+          with:
+            manifests: |
+              k8s/deployment.yml
+            images: |
+              docker.pkg.github.com/atomicpocs/apoc/$IMAGE_NAME
+            imagepullsecrets: |
+              regcred
