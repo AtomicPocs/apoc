@@ -46,12 +46,14 @@ jobs:
           echo VERSION=$VERSION
           docker tag image $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
-      - uses: azure/k8s-deploy@v1
-        with:
-          manifests: |
-            k8s/deployment.yaml
-          images: |
-            $IMAGE_ID
-          imagepullsecrets: |
-            regcred
-          namespace: atomic-pocs
+  deploy:
+    name: deploy to cluster
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: deploy to cluster
+      uses: steebchen/kubectl@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: apply -f k8s/deployment.yaml
