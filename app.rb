@@ -6,8 +6,10 @@ require 'faraday'
 require 'socket'
 require 'json'
 
+SERVICE_NAME = 'A'
+
 get '/' do
-  json message: "I'm service A"
+  json message: "I'm service #{SERVICE_NAME}"
 end
 
 get '/ping' do
@@ -17,7 +19,7 @@ get '/ping' do
   con = Faraday.new
   res = con.get ENV.fetch('ENDPOINT_URL', 'http://localhost:4567/mock')
   data = JSON.parse res.body
-  json message: "pong from A [#{ip} (#{host})], #{data['message']}"
+  json message: "pong from #{SERVICE_NAME} [#{ip} (#{host})], #{data['message']}"
 end
 
 get '/mock' do
