@@ -47,6 +47,7 @@ jobs:
           docker tag image $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
   deploy:
+    needs: push
     name: deploy to cluster
     runs-on: ubuntu-latest
     steps:
@@ -61,4 +62,4 @@ jobs:
           export KUBECONFIG=/tmp/config
 
           echo "Apply"
-          kubectl apply -f k8s/deployment.yaml
+          kubectl -n atomic-pocs apply -f k8s/deployment.yaml
