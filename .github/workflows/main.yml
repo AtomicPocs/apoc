@@ -46,21 +46,18 @@ jobs:
           echo VERSION=$VERSION
           docker tag image $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
-  deploy:
-    needs: push
-    name: deploy to cluster
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - name: Run Kubernetes tools
-      uses: stefanprodan/kube-tools@v1
-      with:
-        kubectl: 1.15.2
-        command: |
-          echo "Setup config"
-          echo "$KUBE_CONFIG_DATA" | base64 --decode > /tmp/config
-          export KUBECONFIG=/tmp/config
-
-          echo "Apply"
-          cat /tmp/config
-          # kubectl -n atomic-pocs apply -f k8s/deployment.yaml
+      - uses: azure/k8s-set-context@v1
+        with:
+          method: kubeconfig
+          kubeconfig:  ${{ KUBE_CONFIG_DATA }}
+        id: setcontext
+      - uses: azure/k8s-deploy@v1
+        with:
+          manifests: |
+            manifests/deployment.yml
+            manifests/service.yml
+          images: |
+            IMAGE_ID
+          imagepullsecrets: |
+            regcred
+          namespace: atomic-pocs
