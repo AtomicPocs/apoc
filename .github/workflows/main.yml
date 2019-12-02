@@ -62,4 +62,5 @@ jobs:
           export KUBECONFIG=/tmp/config
 
           echo "Apply"
-          kubectl -n atomic-pocs apply -f k8s/deployment.yaml
+          echo /tmp/config
+          # kubectl -n atomic-pocs apply -f k8s/deployment.yaml
