@@ -22,6 +22,11 @@ get '/ping' do
   json message: "pong from #{SERVICE_NAME} [#{ip} (#{host})], #{data['message']}"
 end
 
+get '/timeout' do
+  sleep 5
+  json message: "Waked up"
+end
+
 get '/mock' do
   con = Faraday.new
   res = con.get 'http://www.mocky.io/v2/5de16f5b3200007c448093eb'
