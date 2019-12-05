@@ -7,4 +7,4 @@ spec:
   prefix: /apoc/
   method: GET
   service: apoc-service:4567
-  timeout_ms: 8000
+  timeout_ms: 3000
