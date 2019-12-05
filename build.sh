@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 set -eo pipefail
 
-VERSION=1.0.0
+VERSION=1.1.0
 IMAGE="docker.pkg.github.com/atomicpocs/apoc/apoc"
 
 docker build -t $IMAGE:latest -t $IMAGE:$VERSION .
